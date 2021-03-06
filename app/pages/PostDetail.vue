@@ -16,8 +16,28 @@
       />
       <Label class="action-bar-title" :text="post.title" />
     </ActionBar>
-    <GridLayout rows="*" class="page">
-      <Label :text="post.title" />
+    <GridLayout rows="auto, auto">
+      <StackLayout row="0">
+        <Label
+          :text="post.body"
+          textWrap="true"
+          verticalAlignment="top"
+          class="post-body"
+        />
+      </StackLayout>
+      <StackLayout row="1">
+        <Label text="Comments" row="0" />
+        <GridLayout rows="*">
+          <RadListView ref="postCommentList" for="item in comments">
+            <v-template>
+              <StackLayout class="item" orientation="vertical">
+                <Label :text="item.email" class="post-title"></Label>
+                <Label :text="item.body" class="post-body"></Label>
+              </StackLayout>
+            </v-template>
+          </RadListView>
+        </GridLayout>
+      </StackLayout>
     </GridLayout>
   </Page>
 </template>
@@ -25,8 +45,32 @@
 <script>
 export default {
   props: ["post"],
+  data() {
+    return {
+      comments: [],
+      loadingComment: false,
+    };
+  },
   mounted() {
     console.log(this.post);
+  },
+  created() {
+    this.fetchComments();
+  },
+  methods: {
+    async fetchComments() {
+      await fetch(`http://10.0.2.2:3000/comments?postId=${this.post.id}`)
+        .then((response) => response.json())
+        .then((r) => {
+          r.forEach((comment) => {
+            this.comments.push(comment);
+          });
+          this.loadingComment = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
 };
 </script>
@@ -37,5 +81,11 @@ export default {
 
 .action-icon {
   font-size: 20;
+}
+
+.post-body {
+  border-bottom-color: black;
+  border-bottom-style: solid;
+  border-bottom-width: 1;
 }
 </style
