@@ -6,4 +6,4 @@
 4. Run `npm install -g json-server`
 5. Open 2 terminal
 6. Terminal 1 run `json-server --watch db.json`
-7. Run `tns run android`
+7. Terminal 2 run `tns run android`
