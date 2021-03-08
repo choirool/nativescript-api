@@ -5,3 +5,14 @@ GET http://localhost:3000/posts/1
 
 ###
 GET http://localhost:3000/comments?postId=1
+
+###
+POST http://localhost:3000/comments
+Content-Type: application/json
+
+{
+    "postId": 1,
+    "name": "ex eaque eum natus",
+    "email": "Emma@joanny.ca",
+    "body": "omnis"
+}
